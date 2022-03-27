@@ -20,7 +20,9 @@ public class Heroine extends Character { //TODO Cambiar drinkPotion y numDrinkPo
 	}
 	
 	public synchronized void paint(Graphics2D g) {
-		if (this.getEnergy().isFainting()) g.drawImage(this.weapon.getImageCharacter().getImageFainting(), X, Y, WIDTH, HEIGHT, null);
+		if (this.isDrinkPotion()) g.drawImage(((ImageHeroine) this.weapon.getImageCharacter()).getImagePotion(numSprite), X, Y, WIDTH, HEIGHT, null);
+		else if (this.isDefend()) g.drawImage(((ImageHeroine) this.weapon.getImageCharacter()).getImageDefend(), X, Y, WIDTH, HEIGHT, null);
+		else if (this.getEnergy().isFainting()) g.drawImage(this.weapon.getImageCharacter().getImageFainting(), X, Y, WIDTH, HEIGHT, null);
 		else {
 			if (image) g.drawImage(this.weapon.getImageHalt(1), X, Y, WIDTH, HEIGHT, null);
 			else g.drawImage(this.weapon.getImageHalt(2), X, Y, WIDTH, HEIGHT, null);
@@ -56,7 +58,8 @@ public class Heroine extends Character { //TODO Cambiar drinkPotion y numDrinkPo
 	}
 	
 	public void printAnimationPotion() {
-		new SwapImagePotion(12).run();
+		SwapImagePotion swapImagePotion = new SwapImagePotion(12);
+		swapImagePotion.start();
 	}
 
 	public void setDefend(boolean defend) {

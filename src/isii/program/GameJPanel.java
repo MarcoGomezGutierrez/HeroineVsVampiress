@@ -94,7 +94,7 @@ public class GameJPanel extends JPanel {
 				if (turn.getTurn() == 0) {
 					heroine.setDrinkPotion(true);
 					heroine.setDoAction(true);
-					//heroine.printAnimationPotion();
+					heroine.printAnimationPotion();
 					heroine.yourTurn(numAttack, heroine);
 					turn.changeTurn();
 					numAttack = newAttack();
@@ -175,6 +175,7 @@ public class GameJPanel extends JPanel {
 			if (!vampiress.isAttackFinish()) vampiress.paintAttack(numAttack, g);
 			else if (heroine.getEnergy().isEnergyFinished() && vampiress.getEnergy().isEnergyFinished()) {
 				turn.changeTurn();
+				heroine.setDefend(false);
 				if (!heroine.isDrinkPotion() && !heroine.getEnergy().isFainting()) {
 					heroine.setDoAction(false);
 					showAttackPanels(false);

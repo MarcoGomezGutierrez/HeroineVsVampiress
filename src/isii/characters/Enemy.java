@@ -24,7 +24,6 @@ public class Enemy extends Character {
 	
 	private void attackEnemy(int numAttack, Heroine heroine) {
 		if (heroine.isDefend()) heroine.getEnergy().setCharacterDefend(true);
-		heroine.setDefend(false);
 		this.setAttackFinish(false);
 		heroine.getEnergy().setEnergyFinished(false);
 		this.startAttack(numAttack, heroine.getEnergy());
