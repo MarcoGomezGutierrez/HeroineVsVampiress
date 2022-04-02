@@ -3,50 +3,62 @@ package isii.characters;
 import java.awt.Graphics2D;
 import java.util.Random;
 import isii.attacks.Attack;
-import isii.images.ImageHeroine;
+import isii.characters.energy.Energy;
+import isii.images.characters.ImageHeroine;
 import isii.other.Dimensions;
 
 public class Heroine extends Character { //TODO Cambiar drinkPotion y numDrinkPotion con sus respectivos metodos a esta clase
 	
 	private boolean defend = false;
-	private boolean doAction = false;
+	//private boolean doAction = false;
 	private boolean drinkPotion;
 	private int numSprite = 1;
+	private int numAttack;
 	
 	public Heroine(Attack ataque1, Attack ataque2, Attack ataque3, Energy energy) {
-		super(ataque1, ataque2, ataque3, Dimensions.heroineX, Dimensions.heroineY, Dimensions.heroineWidth, Dimensions.heroineHeight, 
-				new ImageHeroine(Dimensions.heroineX, Dimensions.heroineY, Dimensions.heroineWidth, Dimensions.heroineHeight), energy);
+		super(ataque1, ataque2, ataque3, Dimensions.heroineDimension(), 
+				new ImageHeroine(Dimensions.heroineDimension()), energy);
 		this.drinkPotion = false;
+		numAttack = 1;
 	}
 	
+	
+	/**
+	 * Metodo para pintar la heroine, todas las acciones
+	 * @param g
+	 */
 	public synchronized void paint(Graphics2D g) {
-		if (this.isDrinkPotion()) g.drawImage(((ImageHeroine) this.weapon.getImageCharacter()).getImagePotion(numSprite), X, Y, WIDTH, HEIGHT, null);
+		if (!this.weapon.isAttackFinish()) this.paintAttack(numAttack, g);
+		else if (this.isDrinkPotion()) g.drawImage(((ImageHeroine) this.weapon.getImageCharacter()).getImagePotion(numSprite), X, Y, WIDTH, HEIGHT, null);
 		else if (this.isDefend()) g.drawImage(((ImageHeroine) this.weapon.getImageCharacter()).getImageDefend(), X, Y, WIDTH, HEIGHT, null);
 		else if (this.getEnergy().isFainting()) g.drawImage(this.weapon.getImageCharacter().getImageFainting(), X, Y, WIDTH, HEIGHT, null);
-		else {
-			if (image) g.drawImage(this.weapon.getImageHalt(1), X, Y, WIDTH, HEIGHT, null);
-			else g.drawImage(this.weapon.getImageHalt(2), X, Y, WIDTH, HEIGHT, null);
-		}
-		
+		else paintHalt(g);
 	}
 	
+	/**
+	 * Primera condicion, tiene que recuperar vida, cuando:
+	 * - Esta en los turnos de beber la pocion y tambien esta desmayado.
+	 * - Esta desmayado
+	 * @param numAttack
+	 * @param character
+	 */
 	public synchronized void yourTurn(int numAttack, Character character) {
-		if (this.isDrinkPotion()) {
-			if (this.getEnergy().isFainting()) this.recoverEnergy(2);
-		}
-		else if (this.getEnergy().isFainting()) this.recoverEnergy(2);
-		else attackEnemy(numAttack, character);
+		heroineAttack(numAttack, character);
 	}
 	
-	private void attackEnemy(int numAttack, Character character) {
-		this.setAttackFinish(false);
-		character.getEnergy().setEnergyFinished(false);
-		this.startAttack(numAttack, character.getEnergy());
+	private synchronized void heroineAttack(int numAttack, Character character) {
+		this.numAttack = numAttack;
+		this.attackEnemy(numAttack, character);
 	}
-
-	public void recoverEnergy(int energy) {
-		this.getEnergy().setEnergyFinished(false);
-		this.getEnergy().setEnergy(energy, false);
+	
+	public synchronized boolean isStucked() {
+		if (isDrinkPotion() || this.getEnergy().isFainting()) return true;
+		else return false;
+	}
+	
+	public synchronized void recoverEnergyPotion() {
+		this.setDrinkPotion(false);
+		this.recoverEnergy(this.getEnergy().getEnergyBar().getMaximum());
 	}
 	
 	public synchronized boolean isDrinkPotion() {
@@ -57,13 +69,12 @@ public class Heroine extends Character { //TODO Cambiar drinkPotion y numDrinkPo
 		this.drinkPotion = drinkPotion;
 	}
 	
-	public void printAnimationPotion() {
-		SwapImagePotion swapImagePotion = new SwapImagePotion(12);
-		swapImagePotion.start();
-	}
-
 	public void setDefend(boolean defend) {
 		this.defend = defend ? get80Percent() ? true : false : false;
+	}
+	
+	public boolean isDefend() {
+		return this.defend;
 	}
 	
 	private boolean get80Percent() {
@@ -71,16 +82,17 @@ public class Heroine extends Character { //TODO Cambiar drinkPotion y numDrinkPo
 		else return false;
 	}
 	
-	public boolean isDefend() {
-		return this.defend;
-	}
-	
-	public boolean isDoAction() {
+	/*public boolean isDoAction() {
 		return doAction;
 	}
 
 	public void setDoAction(boolean doAction) {
 		this.doAction = doAction;
+	}*/
+	
+	public void printAnimationPotion() {
+		SwapImagePotion swapImagePotion = new SwapImagePotion(12);
+		swapImagePotion.start();
 	}
 	
 	private class SwapImagePotion extends Thread {
