@@ -7,19 +7,20 @@ import isii.characters.energy.Energy;
 import isii.images.characters.ImageHeroine;
 import isii.other.Dimensions;
 
-public class Heroine extends Character { //TODO Cambiar drinkPotion y numDrinkPotion con sus respectivos metodos a esta clase
+public class Heroine extends Character {
 	
-	private boolean defend = false;
-	//private boolean doAction = false;
+	private boolean defend;
 	private boolean drinkPotion;
-	private int numSprite = 1;
+	private int numSprite;
 	private int numAttack;
 	
 	public Heroine(Attack ataque1, Attack ataque2, Attack ataque3, Energy energy) {
 		super(ataque1, ataque2, ataque3, Dimensions.heroineDimension(), 
 				new ImageHeroine(Dimensions.heroineDimension()), energy);
+		this.defend = false;
 		this.drinkPotion = false;
-		numAttack = 1;
+		this.numAttack = 1;
+		this.numSprite = 1;
 	}
 	
 	
@@ -36,9 +37,7 @@ public class Heroine extends Character { //TODO Cambiar drinkPotion y numDrinkPo
 	}
 	
 	/**
-	 * Primera condicion, tiene que recuperar vida, cuando:
-	 * - Esta en los turnos de beber la pocion y tambien esta desmayado.
-	 * - Esta desmayado
+	 * Metodo publico para atacar
 	 * @param numAttack
 	 * @param character
 	 */
@@ -49,11 +48,6 @@ public class Heroine extends Character { //TODO Cambiar drinkPotion y numDrinkPo
 	private synchronized void heroineAttack(int numAttack, Character character) {
 		this.numAttack = numAttack;
 		this.attackEnemy(numAttack, character);
-	}
-	
-	public synchronized boolean isStucked() {
-		if (isDrinkPotion() || this.getEnergy().isFainting()) return true;
-		else return false;
 	}
 	
 	public synchronized void recoverEnergyPotion() {
@@ -69,32 +63,28 @@ public class Heroine extends Character { //TODO Cambiar drinkPotion y numDrinkPo
 		this.drinkPotion = drinkPotion;
 	}
 	
-	public void setDefend(boolean defend) {
-		this.defend = defend ? get80Percent() ? true : false : false;
-	}
-	
 	public boolean isDefend() {
 		return this.defend;
 	}
 	
-	private boolean get80Percent() {
-		if(new Random().nextInt(101) <= 80) return true;
-		else return false;
+	public void setDefend(boolean defend) {
+		this.defend = defend ? get80Percent() ? true : false : false;
 	}
 	
-	/*public boolean isDoAction() {
-		return doAction;
+	private boolean get80Percent() {
+		return new Random().nextInt(101) <= 80;
 	}
-
-	public void setDoAction(boolean doAction) {
-		this.doAction = doAction;
-	}*/
 	
 	public void printAnimationPotion() {
 		SwapImagePotion swapImagePotion = new SwapImagePotion(12);
 		swapImagePotion.start();
 	}
 	
+	/**
+	 * Cambiar el sprite de la animacion de la pocion
+	 * @author marco
+	 *
+	 */
 	private class SwapImagePotion extends Thread {
 		
 		private int finalSprite;

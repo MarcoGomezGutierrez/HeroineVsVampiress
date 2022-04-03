@@ -55,10 +55,10 @@ public class ImageVampiress implements ImageCharacter{
 	 * empieza a moverse a la derecha (14) 
 	 * y para de moverse a la derecha(16)
 	 */
-	private final int numSpritesAttack3 = 41;
-	private final int numSpritesAttack3MovingLeft = 17;
-	private final int numSpritesAttack3StopMovingLeft = 19;
-	private final int numSpritesAttack3MovingRight = 25;
+	private final int numSpritesAttack3 = 30;
+	private final int numSpritesAttack3MovingLeft = 10;
+	private final int numSpritesAttack3StopMovingLeft = 15;
+	private final int numSpritesAttack3MovingRight = 20;
 	private final int numSpritesAttack3StopMovingRight = 25;
 
 	public ImageVampiress(Dimension dimension) {
@@ -67,7 +67,7 @@ public class ImageVampiress implements ImageCharacter{
 		this.addListAttacks(numSpritesAttack2, numSpritesAttack2MovingLeft, numSpritesAttack2StopMovingLeft, numSpritesAttack2MovingRight, numSpritesAttack2StopMovingRight, 
 				"Images\\Vampiress\\Attack_2\\VampiresaAtaque2-", ".png", listAttacks2, dimension.getX(), dimension.getX(), dimension.getY(), dimension.getWidth(), dimension.getHeight(), 120, 100);
 		this.addListAttacks(numSpritesAttack3, numSpritesAttack3MovingLeft, numSpritesAttack3StopMovingLeft, numSpritesAttack3MovingRight, numSpritesAttack3StopMovingRight, 
-				"Images\\Heroina\\Attack_3\\HeroinaAtaque3-", ".png", listAttacks3, dimension.getX(), dimension.getX(), dimension.getY(), dimension.getWidth(), dimension.getHeight(), 170, 0);
+				"Images\\Vampiress\\Attack_3\\VampiresaAtaque3-", ".png", listAttacks3, dimension.getX(), dimension.getX(), dimension.getY(), dimension.getWidth(), dimension.getHeight(), 125, 135);
 	}
 	
 	/**

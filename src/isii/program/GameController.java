@@ -63,7 +63,7 @@ public class GameController extends JPanel {
 		this.resultPanel = resultPanel;
 		
 		numAttack = 1;
-		vampiressEnergy = 30;
+		vampiressEnergy = 60;
 		this.numPlayers = horde ? 4 : 2;
 		this.horde = horde;
 		this.heroineEnergy = horde ? 250 : 150;
